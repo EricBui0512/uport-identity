@@ -19,68 +19,46 @@ function getProvider(rpcUrl) {
   return provider
 }
 
-
 module.exports = {
-  networks: {
-    in_memory: {
-      get provider() {
-        if (!provider) {
-          provider = TestRPC.provider({total_accounts: 25})
-        }
-        return provider
-      },
-      network_id: "*"
+    // See <http://truffleframework.com/docs/advanced/configuration>
+    // for more about customizing your Truffle configuration!
+    networks: {
+        development: {
+            host: "127.0.0.1",
+            port: 7545,
+            gas: 6000000,
+            gasPrice: 4000000000,
+            // from: "0x438cb5211D33684d2261877947E2E71913FB255E",
+            network_id: "*" // Match any network id
+        },
+        coverage: {
+            host: "127.0.0.1",
+            network_id: "*",
+            port: 8555,
+            gas: 0xfffffffffff,
+            gasPrice: 0x01
+        },
+        rinkeby: {
+            provider: function () {
+                return provider
+            },
+            network_id: 4,
+            gas: 5800000,
+            gasPrice: 4000000000,
+        },
+        ropsten: {
+            provider: function () {
+                return provider
+            },
+            network_id: 3,
+            gas: 3800000,
+            gasPrice: 4000000000,
+        },
+
     },
-    coverage: {
-      host: "localhost",
-      network_id: "*",
-      port: 8555,         // <-- Use port 8555
-      gas: 0xfffffffffff, // <-- Use this high gas value
-      gasPrice: 0x01      // <-- Use this low gas price
-    },
-    privateTest: {
-      host: "localhost",
-      port: 8544,
-      network_id: "234"
-    },
-    local: {
-      host: "localhost",
-      port: 8545,
-      network_id: "*" // Match any network id
-    },
-    ropsten: {
-      get provider() {
-        return getProvider("https://ropsten.infura.io/")
-      },
-      gas: 4004580,
-      network_id: 3
-    },
-    rinkeby: {
-      get provider() {
-        return getProvider("https://rinkeby.infura.io/")
-      },
-      network_id: 4
-    },
-    infuranet: {
-      get provider() {
-        return getProvider("https://infuranet.infura.io/")
-      },
-      network_id: "*"
-    },
-    kovan: {
-      get provider() {
-        return getProvider("https://kovan.infura.io/")
-      },
-      gas: 4004580,
-      network_id: 42
-    },
-    mainnet: {
-      get provider() {
-        return getProvider("https://mainnet.infura.io/")
-      },
-      gas: 1704580,
-      gasPrice: 1000000000,
-      network_id: 1
+    compilers: {
+        solc: {
+            version: "0.4.24", // ex:  "0.4.20". (Default: Truffle's installed solc)
+        },
     }
-  }
 };
